@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://code.visualstudio.microsoft.com/" style="text-decoration: none;">
-    <img src="https://img.shields.io/badge/Visual_Studio-1434A4?style=for-the-badge&logo=[visual%20studio](https://skillicons.dev/icons?i=vscode)&logoColor=white">
+    <img src="https://img.shields.io/badge/Visual_Studio-1434A4?style=for-the-badge&logo=https://skillicons.dev/icons?i=vscode&logoColor=white">
   </a>
   <a href="https://discord.gg/GDPsNsavrJ" style="text-decoration: none;">
     <img src="https://img.shields.io/badge/Discord-1434A4?style=for-the-badge&logo=discord&logoColor=white">
