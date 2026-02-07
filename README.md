@@ -2,7 +2,7 @@
   <img src="https://img.shields.io/badge/Visual_Studio-1434A4?style=for-the-badge&logo=visual%20studio&logoColor=white">
   <a href="https://discord.gg/GDPsNsavrJ" style="text-decoration: none;">
     <img src="https://img.shields.io/badge/Discord-1434A4?style=for-the-badge&logo=discord&logoColor=white">
-    <img alt="GitHub User's stars" src="https://img.shields.io/github/stars/isk-d3v?color=1434A4">
+    <img src="https://img.shields.io/github/stars/isk-d3v?color=1434A4">
   </a>
   </p>
 
