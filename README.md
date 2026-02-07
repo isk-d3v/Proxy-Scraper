@@ -1,15 +1,14 @@
 <p align="center">
   <a href="https://code.visualstudio.com/">
-    <img src="https://img.shields.io/badge/Visual%20Studio%20Code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white">
+    <img src="https://img.shields.io/badge/Visual%20Studio%20Code-1434A4?style=for-the-badge&logo=visual-studio-code&logoColor=white">
   </a>
   <a href="https://discord.gg/GDPsNsavrJ">
-    <img src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white">
+    <img src="https://img.shields.io/badge/Discord-1434A4?style=for-the-badge&logo=discord&logoColor=white">
   </a>
   <a href="https://www.microsoft.com/fr-fr/software-download/windows10">
-    <img src="https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white">
+    <img src="https://img.shields.io/badge/Windows-1434A4?style=for-the-badge&logo=windows&logoColor=white">
   </a>
 </p>
-
 
 <picture>
   <source
