@@ -1,10 +1,14 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/Visual_Studio-1434A4?style=for-the-badge&logo=visual%20studio&logoColor=white">
+  <a href="https://visualstudio.microsoft.com/" style="text-decoration: none;">
+    <img src="https://img.shields.io/badge/Visual_Studio-1434A4?style=for-the-badge&logo=visual%20studio&logoColor=white">
+  </a>
   <a href="https://discord.gg/GDPsNsavrJ" style="text-decoration: none;">
     <img src="https://img.shields.io/badge/Discord-1434A4?style=for-the-badge&logo=discord&logoColor=white">
+  </a>
+  <a href="https://github.com/isk-d3v" style="text-decoration: none;">
     <img src="https://img.shields.io/github/stars/isk-d3v?color=1434A4">
   </a>
-  </p>
+</p>
 
 <picture>
   <source
