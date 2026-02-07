@@ -169,7 +169,7 @@ async def main():
     print(gradient("\n[+] Checking proxies...\n"))
     await run(proxies)
     print(gradient("\n[+] DONE\n"))
-    print(f"[+] Les bons proxies sont dans : {OUTPUT}")
+    print(f"[+] Saved in : {OUTPUT}")
 
 if __name__ == "__main__":
     asyncio.run(main())
