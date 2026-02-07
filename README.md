@@ -1,7 +1,7 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/Visual_Studio-89CFF0?style=for-the-badge&logo=visual%20studio&logoColor=white">
+  <img src="https://img.shields.io/badge/Visual_Studio-1434A4?style=for-the-badge&logo=visual%20studio&logoColor=white">
   <a href="https://discord.gg/GDPsNsavrJ" style="text-decoration: none;">
-    <img src="https://img.shields.io/badge/Discord-89CFF0?style=for-the-badge&logo=discord&logoColor=white">
+    <img src="https://img.shields.io/badge/Discord-1434A4?style=for-the-badge&logo=discord&logoColor=white">
   </a>
   </p>
 
