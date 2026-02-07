@@ -1,6 +1,9 @@
-
-[![Discord](https://img.shields.io/badge/Discord-9B59B6?style=for-the-badge&logo=discord&logoColor=white")](https://discord.gg/yAN68MXgnx)
-[![VisualStudio](https://img.shields.io/badge/Visual_Studio-8E44AD?style=for-the-badge&logo=visual%20studio&logoColor=white")](https://code.visualstudio.com/)
+<p align="center">
+  <img src="https://img.shields.io/badge/Visual_Studio-8E44AD?style=for-the-badge&logo=visual%20studio&logoColor=white">
+  <a href="https://discord.gg/j6hTUB5GBx" style="text-decoration: none;">
+    <img src="https://img.shields.io/badge/Discord-9B59B6?style=for-the-badge&logo=discord&logoColor=white">
+  </a>
+  </p>
 
 <picture>
   <source
