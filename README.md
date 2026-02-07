@@ -1,5 +1,5 @@
 
-[![Discord](https://img.shields.io/static/v1?message=Discord&logo=discord&label=&color=7289DA&logoColor=white&labelColor=&style=for-the-badge")](https://discord.gg/hfuQKpNTun)
+[![Discord](https://img.shields.io/badge/Discord-9B59B6?style=for-the-badge&logo=discord&logoColor=white")](https://discord.gg/yAN68MXgnx)
 [![VisualStudio](https://img.shields.io/badge/Visual_Studio-8E44AD?style=for-the-badge&logo=visual%20studio&logoColor=white")](https://code.visualstudio.com/)
 
 <picture>
