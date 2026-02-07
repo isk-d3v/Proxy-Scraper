@@ -50,9 +50,9 @@ def gradient(text, t=None):
     result = ""
     for i, c in enumerate(text):
         wave = math.sin(t + i * 0.2)
-        r = int(120 + wave * 100)
-        g = int(180 + wave * 60)
-        b = int(255 - wave * 140)
+        r = int(120 + wave*100)
+        g = int(180 + wave*60)
+        b = int(255 - wave*140)
         result += f"\033[38;2;{r};{g};{b}m{c}"
     return result + RESET
 
@@ -80,8 +80,18 @@ SOURCES = [
     "https://raw.githubusercontent.com/roosterkid/openproxylist/main/HTTP_RAW.txt",
     "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt",
     "https://raw.githubusercontent.com/mertguvencli/http-proxy-list/main/proxy-list/data.txt",
+    "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/http.txt",
+    "https://raw.githubusercontent.com/jetkai/proxy-list/main/proxy-list-raw.txt",
+    "https://raw.githubusercontent.com/HyperBeats/proxy-list/main/http.txt",
+    "https://raw.githubusercontent.com/roosterkid/openproxylist/main/HTTP.txt",
+    "https://raw.githubusercontent.com/ajkxyz/proxy-list/master/http.txt",
+    "https://raw.githubusercontent.com/opsxcq/proxy-list/master/list.txt",
+    "https://raw.githubusercontent.com/BlackMatrix7/awesome-proxies/master/http.txt",
+    "https://raw.githubusercontent.com/eth0izzle/proxy-list/main/http.txt",
+    "https://raw.githubusercontent.com/rohan-paul/Free-Proxy-List/main/http.txt",
+    "https://raw.githubusercontent.com/roosterkid/proxy-list/main/HTTP_RAW.txt",
+    "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt",
 ]
-
 
 def speed():
     t = time.time() - start
@@ -90,13 +100,11 @@ def speed():
 def success():
     return (good / checked * 100) if checked else 0
 
-
 async def scrape():
     proxies = set()
-    spinner = ["|", "/", "-", "\\"]
+    spinner = ["|","/","-","\\"]
     print()
     print(gradient("[+] Scraping proxies "), end="", flush=True)
-
     async with httpx.AsyncClient(timeout=15, verify=False) as client:
         tasks = [client.get(url) for url in SOURCES]
         for i, coro in enumerate(asyncio.as_completed(tasks)):
@@ -109,11 +117,9 @@ async def scrape():
                 pass
             sys.stdout.write(f"\r{gradient('[+] Scraping proxies ')}{spinner[i % len(spinner)]}")
             sys.stdout.flush()
-
-    sys.stdout.write("\r" + " " * 50 + "\r") 
+    sys.stdout.write("\r" + " "*50 + "\r")
     print(gradient(f"[+] Total proxies: {len(proxies)}"))
     return list(proxies)
-
 
 async def check(proxy, client, pbar):
     global checked, good, bad
@@ -132,10 +138,8 @@ async def check(proxy, client, pbar):
         async with lock:
             bad += 1
             checked += 1
-
     s = speed()
     set_title(f"{NAME} | GOOD {good} BAD {bad} | {s}/s | {success():.1f}%")
-
     pbar.set_description(gradient(f"[ {checked}/{pbar.total} ]"))
     pbar.set_postfix({
         "GOOD": good,
@@ -147,29 +151,21 @@ async def check(proxy, client, pbar):
 
 async def run(proxies):
     async with httpx.AsyncClient(verify=False) as client:
-        pbar = tqdm(
-            total=len(proxies),
-            ascii="░█",
-            ncols=120,
-            bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"
-        )
+        pbar = tqdm(total=len(proxies), ascii="░█", ncols=120, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")
         tasks = [check(p, client, pbar) for p in proxies]
         await asyncio.gather(*tasks)
-
 
 async def main():
     clear()
     print(gradient(ASCII))
-    print(gradient(NAME + "\n"))
-
+    print(gradient(NAME+"\n"))
     with open(OUTPUT, "w", encoding="utf-8") as f:
         pass
-
     proxies = await scrape()
     print(gradient("\n[+] Checking proxies...\n"))
     await run(proxies)
     print(gradient("\n[+] DONE\n"))
-    print(f"[+] Saved in : {OUTPUT}")
+    print(f"[+] Working proxies saved in: {OUTPUT}")
 
 if __name__ == "__main__":
     asyncio.run(main())
