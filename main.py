@@ -1,8 +1,22 @@
-import os, sys, time, asyncio, platform, subprocess, math, ctypes
+import os
+import sys
+import time
+import asyncio
+import platform
+import subprocess
+import math
+import ctypes
 
 NAME = "Proxy Scraper"
-OUTPUT = "proxies.txt"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+OUTPUT = os.path.join(BASE_DIR, "proxies.txt")
 IS_WINDOWS = platform.system().lower() == "windows"
+SEM = asyncio.Semaphore(1000)
+lock = asyncio.Lock()
+checked = 0
+good = 0
+bad = 0
+start = time.time()
 
 def clear():
     os.system("cls" if IS_WINDOWS else "clear")
@@ -20,9 +34,8 @@ def ensure(pkg):
     except:
         pip_install(pkg)
 
-if IS_WINDOWS:
-    for pkg in ["httpx", "tqdm", "colorama"]:
-        ensure(pkg)
+for pkg in ["httpx", "tqdm", "colorama"]:
+    ensure(pkg)
 
 import httpx
 from tqdm import tqdm
@@ -33,13 +46,13 @@ RESET = "\033[0m"
 
 def gradient(text, t=None):
     if t is None:
-        t = time.time()*5
+        t = time.time() * 5
     result = ""
     for i, c in enumerate(text):
-        wave = math.sin(t + i*0.2)
-        r = int(120 + wave*100)
-        g = int(180 + wave*60)
-        b = int(255 - wave*140)
+        wave = math.sin(t + i * 0.2)
+        r = int(120 + wave * 100)
+        g = int(180 + wave * 60)
+        b = int(255 - wave * 140)
         result += f"\033[38;2;{r};{g};{b}m{c}"
     return result + RESET
 
@@ -58,20 +71,6 @@ ASCII = """
 ⠀⠀⠀⠀⠀⠀⠀⠈⢿⡿⠟⠃⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀
 """
 
-checked = 0
-good = 0
-bad = 0
-start = time.time()
-lock = asyncio.Lock()
-SEM = asyncio.Semaphore(1000)
-
-def speed():
-    t = time.time() - start
-    return int(checked / t) if t > 0 else 0
-
-def success():
-    return (good / checked * 100) if checked else 0
-
 SOURCES = [
     "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http",
     "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt",
@@ -82,6 +81,14 @@ SOURCES = [
     "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt",
     "https://raw.githubusercontent.com/mertguvencli/http-proxy-list/main/proxy-list/data.txt",
 ]
+
+
+def speed():
+    t = time.time() - start
+    return int(checked / t) if t > 0 else 0
+
+def success():
+    return (good / checked * 100) if checked else 0
 
 
 async def scrape():
@@ -116,7 +123,7 @@ async def check(proxy, client, pbar):
             async with lock:
                 if r.status_code == 200:
                     good += 1
-                    with open(OUTPUT, "a") as f:
+                    with open(OUTPUT, "a", encoding="utf-8") as f:
                         f.write(proxy + "\n")
                 else:
                     bad += 1
@@ -149,17 +156,20 @@ async def run(proxies):
         tasks = [check(p, client, pbar) for p in proxies]
         await asyncio.gather(*tasks)
 
+
 async def main():
     clear()
     print(gradient(ASCII))
     print(gradient(NAME + "\n"))
 
-    if os.path.exists(OUTPUT):
-        os.remove(OUTPUT)
+    with open(OUTPUT, "w", encoding="utf-8") as f:
+        pass
 
     proxies = await scrape()
     print(gradient("\n[+] Checking proxies...\n"))
     await run(proxies)
     print(gradient("\n[+] DONE\n"))
+    print(f"[+] Les bons proxies sont dans : {OUTPUT}")
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
