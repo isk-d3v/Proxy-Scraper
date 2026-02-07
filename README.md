@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://code.visualstudio.com/">
-    <img src="https://img.shields.io/badge/Visual%20Studio%20Code-1434A4?style=for-the-badge&logo=visual-studio-code&logoColor=white">
+    <img src="https://img.shields.io/badge/Visual%20Studio%20Code-1434A4?style=for-the-badge&logo=vscode&logoColor=white">
   </a>
   <a href="https://discord.gg/GDPsNsavrJ">
     <img src="https://img.shields.io/badge/Discord-1434A4?style=for-the-badge&logo=discord&logoColor=white">
