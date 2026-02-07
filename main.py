@@ -34,7 +34,7 @@ def ensure(pkg):
     except:
         pip_install(pkg)
 
-for pkg in ["httpx", "tqdm", "colorama"]:
+for pkg in ["httpx", "tqdm", "colorama", "httpx[socks]"]:
     ensure(pkg)
 
 import httpx
@@ -56,76 +56,63 @@ def gradient(text, t=None):
         result += f"\033[38;2;{r};{g};{b}m{c}"
     return result + RESET
 
-ASCII = """
-⠀⠀⠀⠀⠀⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⢿⣧⠀⠀⠀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⢸⣿⣇⠀⢸⣿⣿⣦⣤⣄⣀⣴⣿⣷⠀⠀⠀
-⠀⠀⠀⠀⠀⢸⣿⣿⡆⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀
-⠀⠀⠀⠀⢀⣼⣿⣿⣧⣿⣿⣿⣿⡟⣿⣿⣿⠻⣿⠂⡀⠀
-⠀⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣧⣿⣿⣿⣦⣿⣏⠁⠀
-⠀⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⠀⠀
-⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠋⠀⠀⠀
-⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀⠀⠀
-⢠⣾⣿⡿⠋⠀⠈⠙⣿⣿⣿⡿⣿⡿⠿⠟⢿⣿⣿⣷⣄⠀
-⠈⠿⡿⠃⠀⠀⠀⠀⣿⣿⣿⣧⠀⠀⠀⠀⠀⠉⠻⣿⡿⠂
-⠀⠀⠀⠀⠀⠀⠀⠈⢿⡿⠟⠃⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀
-"""
-
-SOURCES = [
+HTTP_SOURCES = [
     "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http",
     "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt",
-    "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/http.txt",
-    "https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies-http.txt",
-    "https://www.proxy-list.download/api/v1/get?type=http",
-    "https://raw.githubusercontent.com/roosterkid/openproxylist/main/HTTP_RAW.txt",
-    "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt",
-    "https://raw.githubusercontent.com/mertguvencli/http-proxy-list/main/proxy-list/data.txt",
     "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/http.txt",
-    "https://raw.githubusercontent.com/jetkai/proxy-list/main/proxy-list-raw.txt",
-    "https://raw.githubusercontent.com/HyperBeats/proxy-list/main/http.txt",
-    "https://raw.githubusercontent.com/roosterkid/openproxylist/main/HTTP.txt",
-    "https://raw.githubusercontent.com/ajkxyz/proxy-list/master/http.txt",
-    "https://raw.githubusercontent.com/opsxcq/proxy-list/master/list.txt",
-    "https://raw.githubusercontent.com/BlackMatrix7/awesome-proxies/master/http.txt",
-    "https://raw.githubusercontent.com/eth0izzle/proxy-list/main/http.txt",
-    "https://raw.githubusercontent.com/rohan-paul/Free-Proxy-List/main/http.txt",
-    "https://raw.githubusercontent.com/roosterkid/proxy-list/main/HTTP_RAW.txt",
-    "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt",
+]
+
+HTTPS_SOURCES = [
+    "https://api.proxyscrape.com/v2/?request=getproxies&protocol=https",
+    "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/https.txt",
+]
+
+SOCKS4_SOURCES = [
+    "https://api.proxyscrape.com/v2/?request=getproxies&protocol=socks4",
+    "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/socks4.txt",
+]
+
+SOCKS5_SOURCES = [
+    "https://api.proxyscrape.com/v2/?request=getproxies&protocol=socks5",
+    "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/socks5.txt",
+]
+
+ALL_SOURCES = [
+    ("http", HTTP_SOURCES),
+    ("https", HTTPS_SOURCES),
+    ("socks4", SOCKS4_SOURCES),
+    ("socks5", SOCKS5_SOURCES),
 ]
 
 def speed():
     t = time.time() - start
     return int(checked / t) if t > 0 else 0
 
-def success():
-    return (good / checked * 100) if checked else 0
-
 async def scrape():
-    proxies = set()
-    spinner = ["|","/","-","\\"]
-    print()
-    print(gradient("[+] Scraping proxies "), end="", flush=True)
+    proxies = []
     async with httpx.AsyncClient(timeout=15, verify=False) as client:
-        tasks = [client.get(url) for url in SOURCES]
-        for i, coro in enumerate(asyncio.as_completed(tasks)):
-            try:
-                r = await coro
-                for p in r.text.splitlines():
-                    if ":" in p:
-                        proxies.add(p.strip())
-            except:
-                pass
-            sys.stdout.write(f"\r{gradient('[+] Scraping proxies ')}{spinner[i % len(spinner)]}")
-            sys.stdout.flush()
-    sys.stdout.write("\r" + " "*50 + "\r")
-    print(gradient(f"[+] Total proxies: {len(proxies)}"))
-    return list(proxies)
+        for proto, sources in ALL_SOURCES:
+            for url in sources:
+                try:
+                    r = await client.get(url)
+                    for line in r.text.splitlines():
+                        if ":" in line:
+                            proxies.append((proto, line.strip()))
+                except:
+                    pass
+    print(gradient(f"[+] Scraped: {len(proxies)}"))
+    return proxies
 
-async def check(proxy, client, pbar):
+async def check(proto, proxy, client, pbar):
     global checked, good, bad
+    proxy_url = f"{proto}://{proxy}"
     try:
         async with SEM:
-            r = await client.get("http://httpbin.org/ip", proxies=f"http://{proxy}", timeout=6)
+            r = await client.get(
+                "http://httpbin.org/ip",
+                proxies={"all://": proxy_url},
+                timeout=8
+            )
             async with lock:
                 if r.status_code == 200:
                     good += 1
@@ -138,34 +125,31 @@ async def check(proxy, client, pbar):
         async with lock:
             bad += 1
             checked += 1
+
     s = speed()
-    set_title(f"{NAME} | GOOD {good} BAD {bad} | {s}/s | {success():.1f}%")
-    pbar.set_description(gradient(f"[ {checked}/{pbar.total} ]"))
-    pbar.set_postfix({
-        "GOOD": good,
-        "BAD": bad,
-        "SPEED": f"{s}/s",
-        "SUCCESS": f"{success():.1f}%"
-    })
+    set_title(f"{NAME} | GOOD {good} BAD {bad} | {s}/s")
+
+    pbar.set_postfix(GOOD=good, BAD=bad, SPEED=f"{s}/s")
     pbar.update(1)
 
 async def run(proxies):
     async with httpx.AsyncClient(verify=False) as client:
-        pbar = tqdm(total=len(proxies), ascii="░█", ncols=120, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")
-        tasks = [check(p, client, pbar) for p in proxies]
+        pbar = tqdm(total=len(proxies), ncols=120)
+        tasks = [check(proto, proxy, client, pbar) for proto, proxy in proxies]
         await asyncio.gather(*tasks)
 
 async def main():
     clear()
-    print(gradient(ASCII))
     print(gradient(NAME+"\n"))
-    with open(OUTPUT, "w", encoding="utf-8") as f:
+
+    with open(OUTPUT, "w", encoding="utf-8"):
         pass
+
     proxies = await scrape()
-    print(gradient("\n[+] Checking proxies...\n"))
     await run(proxies)
-    print(gradient("\n[+] DONE\n"))
-    print(f"[+] Working proxies saved in: {OUTPUT}")
+
+    print(gradient("\n[+] Done"))
+    print(f"[+] Saved in {OUTPUT}")
 
 if __name__ == "__main__":
     asyncio.run(main())
